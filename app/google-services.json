@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "899805993621",
+    "firebase_url": "https://jcstagram-fef65.firebaseio.com",
+    "project_id": "jcstagram-fef65",
+    "storage_bucket": "jcstagram-fef65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899805993621:android:109f7c654eebe0c2",
+        "android_client_info": {
+          "package_name": "com.study.jcstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899805993621-i1mqroge4he2n5aqui7p1brvtr23tc7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.study.jcstagram",
+            "certificate_hash": "d7dd4f49f5720dbfd365cdcc25ac16f9b0f87aae"
+          }
+        },
+        {
+          "client_id": "899805993621-bfclivd8i75ahcvg86p6uhau16opleai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLshhmMFkdPRruTR22cJwmIG_inF3r_5E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899805993621-bfclivd8i75ahcvg86p6uhau16opleai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
