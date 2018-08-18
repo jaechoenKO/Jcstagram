@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         bottom_navigation.setOnNavigationItemSelectedListener(this) // this : class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener 을 의미
 
+        // 자동으로 선택.
+        bottom_navigation.selectedItemId = R.id.action_home
+
         // 앨범 접근 권한을 위한 코드
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
 

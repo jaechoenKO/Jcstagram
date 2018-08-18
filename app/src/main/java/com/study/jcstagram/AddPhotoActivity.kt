@@ -6,7 +6,10 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.study.jcstagram.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_add_photo.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,12 +19,18 @@ class AddPhotoActivity : AppCompatActivity() {
     val PICK_IMAGE_FROM_ALBUM = 0
     var storage : FirebaseStorage? = null
     var photoUri : Uri? = null
+    // FirebaseAuth.getInstance()로그인에 대한 모든 것을 관리하는 라이브러리
+    var auth : FirebaseAuth? = null
+    // 데이터 저장
+    var firestore : FirebaseFirestore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo)
 
         storage = FirebaseStorage.getInstance()
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         var photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
@@ -74,8 +83,42 @@ class AddPhotoActivity : AppCompatActivity() {
         // images라는 폴더에 파일이 넣는다.
         val storageRef = storage?.reference?.child("images")?.child(imageFileName)
 
-        storageRef?.putFile(photoUri!!)?.addOnSuccessListener {
+        storageRef?.putFile(photoUri!!)?.addOnSuccessListener { taskSnapshot ->
+
             Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_LONG).show()
+            // 업로드 된 이미지 주소
+            var uri = taskSnapshot.downloadUrl
+
+            // 이미지 주소
+            var contentDTO = ContentDTO()
+            contentDTO.imageUrl = uri!!.toString() // uri 파일 경로에 대한 모든것. url은 http 주소. uri가 url 개념을 포괄하는 개념.
+
+            // 유저의 UID
+            contentDTO.uid = auth?.currentUser?.uid
+
+            // 유저 아이디
+            contentDTO.userId = auth?.currentUser?.email
+
+            // 게시물 업로드 시간, System.currentTimeMillis() 시간을 받아옴.
+            contentDTO.timestamp = System.currentTimeMillis()
+
+            /*
+            * service cloud.firestore {
+                match /databases/{database}/documents {
+                    match /{document=**} {
+                        allow read, write;
+                        }
+                    }
+                } *
+                파이어 베이스 사이트에 규약이 저렇게 되있는데 되질 않는다. write 뒤에
+                :if request.auth.uid != null; 이걸 추가해주어야 한다.
+            */
+            // 데이터 저장 collection는 일종의 경로, document에 이름을 넣을 수 있고 없으면 알아서 넣어준다.
+            firestore?.collection("images")?.document()?.set(contentDTO)
+            setResult(Activity.RESULT_OK)
+
+            finish()
+
         }
     }
 
